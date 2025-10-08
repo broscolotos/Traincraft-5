@@ -7,13 +7,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import tmt.Vec3f;
 import train.common.Traincraft;
-import train.common.api.LiquidManager;
-import train.common.api.SteamTrain;
+import train.common.api.*;
 import train.common.library.EnumTrains;
 import train.common.library.GuiIDs;
+import train.common.library.IEnumTrains;
 
-public class SteamBKno2a extends SteamTrain {
+public class SteamBKno2a extends SteamTrain implements IArticulatedPart {
 	public SteamBKno2a(World world) {
 		super(world, EnumTrains.BKno2a.getTankCapacity(), LiquidManager.WATER_FILTER);
 		initLocoSteam();
@@ -85,6 +86,12 @@ public class SteamBKno2a extends SteamTrain {
 		if (worldObj.isRemote) {
 			return;
 		}
+		//if neither of the linked cars are the parent, kill the entity
+		if (ticksExisted > 10) {
+			if (!(cartLinked1 != null && this.cartLinked1.getTrainType().equalsIgnoreCase(this.getParentEntity().getTrainType()) || (cartLinked2 != null && this.cartLinked2.getTrainType().equalsIgnoreCase(this.getParentEntity().getTrainType())))) {
+				this.setDead();
+			}
+		}
 		checkInvent(locoInvent[0], locoInvent[1], this);
 	}
 
@@ -141,5 +148,10 @@ public class SteamBKno2a extends SteamTrain {
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		return true;
+	}
+
+	@Override
+	public IEnumTrains getParentEntity() {
+		return EnumTrains.BKno2b;
 	}
 }

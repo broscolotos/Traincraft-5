@@ -8,12 +8,14 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import train.common.Traincraft;
+import train.common.api.IArticulated;
 import train.common.api.LiquidManager;
 import train.common.api.SteamTrain;
 import train.common.library.EnumTrains;
 import train.common.library.GuiIDs;
+import train.common.library.IEnumTrains;
 
-public class SteamBKno2b extends SteamTrain {
+public class SteamBKno2b extends SteamTrain implements IArticulated {
 	public SteamBKno2b(World world) {
 		super(world, EnumTrains.BKno2b.getTankCapacity(), LiquidManager.WATER_FILTER);
 		initLocoSteam();
@@ -140,6 +142,21 @@ public class SteamBKno2b extends SteamTrain {
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+		return true;
+	}
+
+	@Override
+	public int getSpawnOffset() {
+		return 2;
+	}
+
+	@Override
+	public EnumTrains getArticulatedEntity() {
+		return EnumTrains.BKno2a;
+	}
+
+	@Override
+	public boolean shouldInvertRotation() {
 		return true;
 	}
 }
