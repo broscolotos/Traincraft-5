@@ -18,11 +18,7 @@ public class EntityFlatCartSU extends EntityRollingStock implements IPassenger {
 		riddenByEntity.setPosition(posX, posY + getMountedYOffset() + riddenByEntity.getYOffset() + 0.4, posZ);
 	}
 
-	@Override
-	public void onUpdate(){
-		super.onUpdate();
-		boundingBox.maxY-=1;
-	}
+
 
 	
 

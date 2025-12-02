@@ -17,12 +17,6 @@ public class EntityFlatCartUS extends AbstractPassengerCar
 	}
 
 	@Override
-	public void onUpdate(){
-		super.onUpdate();
-		boundingBox.maxY-=1;
-	}
-
-	@Override
 	public float getOptimalDistance(EntityMinecart cart) {
 		return 1.74F;
 	}

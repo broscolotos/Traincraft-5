@@ -10,11 +10,7 @@ public class EntityFlatCar_DB extends AbstractPassengerCar {
 		super(world);
 	}
 
-	@Override
-	public void onUpdate(){
-		super.onUpdate();
-		boundingBox.maxY-=1;
-	}
+
 
 	@Override
 	public void updateRiderPosition() {

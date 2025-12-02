@@ -15,11 +15,7 @@ public class EntityFlatCart extends AbstractPassengerCar {
 		riddenByEntity.setPosition(posX, posY + getMountedYOffset() + riddenByEntity.getYOffset() + 0.4, posZ);
 	}
 
-	@Override
-	public void onUpdate(){
-		super.onUpdate();
-		boundingBox.maxY-=1;
-	}
+
 
 	@Override
 	public float getOptimalDistance(EntityMinecart cart) {
