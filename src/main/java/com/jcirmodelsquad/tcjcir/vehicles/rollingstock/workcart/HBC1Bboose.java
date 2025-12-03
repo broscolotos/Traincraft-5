@@ -20,7 +20,7 @@ public class HBC1Bboose extends AbstractWorkCart
     @Override
     public String transportCountry()
     {
-        return "USA";
+        return "US";
     }
 
     @Override
