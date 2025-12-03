@@ -8,7 +8,8 @@ import train.common.tile.TileEmbeddedAmericanStopper;
 public class BlockAmericanEmbeddedStopper extends BlockAmericanStopper
 {
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
+    public TileEntity createNewTileEntity(World world, int meta)
+    {
         return new TileEmbeddedAmericanStopper(meta);
     }
 }

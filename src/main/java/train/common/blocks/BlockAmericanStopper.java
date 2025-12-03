@@ -67,6 +67,20 @@ public class BlockAmericanStopper extends BlockContainer {
 
         if (te !=  null)
         {
+            // Have to do this because buffer metadata was off by 1
+            switch (dir)
+            {
+                case 0:
+                    dir = 3;
+                break;
+                case 1:
+                case 2:
+                case 3:
+                    dir--;
+                break;
+            }
+
+
             te.setFacing(dir);
         }
     }
