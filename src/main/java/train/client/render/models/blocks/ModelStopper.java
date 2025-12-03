@@ -140,7 +140,7 @@ public class ModelStopper extends ModelBase
 
 	public void render2(float f5, int facing, EnumTracks enumTrack)
 	{
-		RenderTCRail.modelSmallStraight.render(enumTrack, "", facing, -0.5, 0, -0.5, 1, 1, 1, 1);
+		RenderTCRail.modelSmallStraight.render(enumTrack, "", 1, -0.5, 0, -0.5, 1, 1, 1, 1);
 
 		tmt.Tessellator.bindTexture(texture);
 		box.render(f5);
