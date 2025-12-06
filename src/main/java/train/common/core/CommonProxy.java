@@ -8,6 +8,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -26,12 +27,14 @@ import train.common.containers.*;
 import train.common.core.handlers.ChunkEvents;
 import train.common.core.handlers.WorldEvents;
 import train.common.core.util.MP3Player;
+import train.common.entity.EntitySeat;
 import train.common.entity.digger.EntityRotativeDigger;
 import train.common.entity.rollingStock.EntityJukeBoxCart;
 import train.common.entity.rollingStock.EntityTracksBuilder;
 import train.common.entity.zeppelin.AbstractZeppelin;
 import train.common.inventory.*;
 import train.common.library.GuiIDs;
+import train.common.library.TraincraftRegistry;
 import train.common.mtc.block.BlockReceiverMTC;
 import train.common.mtc.block.BlockTransmitterMTC;
 import train.common.mtc.block.BlockTransmitterSpeed;
@@ -68,7 +71,6 @@ public class CommonProxy implements IGuiHandler {
 		registerEvent(worldEvents);
 		registerEvent(chunkEvents);
 		ForgeChunkManager.setForcedChunkLoadingCallback(Traincraft.instance, chunkEvents);
-
 	}
 
 	public void registerEvent(Object o){

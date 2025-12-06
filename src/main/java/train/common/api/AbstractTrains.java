@@ -11,7 +11,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -33,6 +35,7 @@ import train.common.blocks.BlockTCRailGag;
 import train.common.core.handlers.ConfigHandler;
 import train.common.core.handlers.TrainHandler;
 import train.common.entity.CargoManager;
+import train.common.entity.EntitySeat;
 import train.common.entity.TrustedPlayer;
 import train.common.items.ItemChunkLoaderActivator;
 import train.common.items.ItemAbstractRollingStock;
@@ -68,6 +71,8 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 	protected Ticket chunkTicket;
 	public float renderYaw;
 	protected float renderPitch;
+	public EntitySeat seat = null;
+	private EntitySeat seatToSpawn;
     /**
      * The Train
      */
@@ -1090,5 +1095,146 @@ public abstract class AbstractTrains extends EntityMinecart implements IMinecart
 	public void onRenderInsertRecord()
 	{
 
+	}
+
+	/**
+	 * SEAT STUFFS MAYBE
+	 */
+	public EntitySeat getSeat() {
+		return seat;
+	}
+
+	public void setSeat(EntitySeat seatIn) {
+		seat = seatIn;
+	}
+
+	public void sitEntity(Entity entity) {
+		entity.mountEntity(this);
+	}
+
+	public List<EntityLivingBase> getPassengers() {
+		List<EntityLivingBase> list = new ArrayList<EntityLivingBase>();
+		if (riddenByEntity instanceof EntityLivingBase) {
+			list.add((EntityLivingBase) riddenByEntity);
+			if (seat != null && seat.riddenByEntity != null) {
+				list.add((EntityLivingBase) seat.riddenByEntity);
+			}
+		}
+		return list;
+	}
+
+	protected float getDefaultRiderOffset() {
+		return 0.0f;
+	}
+
+	public void updatePassenger(Entity passenger) {
+		float f = this.getDefaultRiderOffset();
+		float f1 = (float) ((this.isDead ? 0.009999999776482582D : this.getMountedYOffset()) + passenger.getYOffset());
+
+		if (this.getPassengers().size() > 1) {
+			int i = this.getPassengers().indexOf(passenger);
+
+			if (i == 0) {
+				f = 0.2F;
+			} else {
+				f = -0.6F;
+			}
+
+			if (passenger instanceof EntityAnimal) {
+				f = (float) ((double) f + 0.2D);
+			}
+		}
+
+		Vec3 vec3d = (Vec3.createVectorHelper(f, 0.0D, 0.0D));
+		vec3d.rotateAroundY(-this.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
+		passenger.setPosition(this.posX + vec3d.xCoord, this.posY + (double) f1, this.posZ + vec3d.zCoord);
+		//rotation locking stuff
+		/*if (ConfigTweaks.stopBoatRotationLock) {
+			return;
+		}
+		else {
+			passenger.rotationYaw += this.deltaRotation;
+			this.applyYawToEntity(passenger);
+		}*/
+	}
+
+	public void addToTrain(Entity entity) {
+		if (!(entity instanceof EntityLivingBase)) return;
+		EntityLivingBase oldDriver = (EntityLivingBase) getControllingPassenger();
+		if (getPassengers().isEmpty()) {
+			sitEntity(entity);
+		} else if (getPassengers().size() == 1) {
+			if (seat == null) return;
+			if (entity instanceof EntityPlayer && !(oldDriver instanceof EntityPlayer)) {
+				addToSeat(oldDriver);
+				entity.mountEntity(this);
+			} else {
+				addToSeat(entity);
+			}
+		}
+		entity.prevRotationYaw = this.rotationYaw;
+		entity.rotationYaw = this.rotationYaw;
+	}
+
+	private void addToSeat(Entity entity) {
+		seat.sitEntity(entity);
+	}
+
+	public Entity getControllingPassenger() {
+		List<EntityLivingBase> list = this.getPassengers();
+		return list.isEmpty() ? null : list.get(0);
+	}
+
+	@Override
+	public void updateRiderPosition() {
+		if (riddenByEntity != null)
+			updatePassenger(riddenByEntity);
+	}
+
+	protected boolean shouldHaveSeat() {
+		return true;
+	}
+
+	public boolean hasSeat() {
+		return seat != null && !seat.isDead;
+	}
+
+	@Override
+	public void onEntityUpdate() {
+		super.onEntityUpdate();
+
+		if (!worldObj.isRemote && !hasSeat() && shouldHaveSeat()) {
+			EntitySeat newSeat;
+			if (seatToSpawn == null) {
+				newSeat = new EntitySeat(worldObj, this);
+				newSeat.setTrain(this);
+			} else {
+				newSeat = seatToSpawn;
+				seatToSpawn = null;
+			}
+			newSeat.forceSpawn = true;
+			newSeat.copyLocationAndAnglesFrom(this);
+			worldObj.spawnEntityInWorld(newSeat);
+			this.setSeat(newSeat);
+			newSeat.forceSpawn = false;
+		}
+
+		if (getSeat() != null && getSeat().riddenByEntity != null && riddenByEntity == null) {
+			sitEntity(getSeat().riddenByEntity);
+		}
+	}
+
+	protected boolean canFitPassenger(Entity passenger) {
+		return this.getPassengers().size() < 2;
+	}
+	public boolean isPassenger(Entity entity) {
+		return getPassengers().contains(entity);
+	}
+
+	public void removePassengers() {
+		if (getPassengers().isEmpty()) return;
+		for (EntityLivingBase passenger : getPassengers()) {
+			passenger.mountEntity(null);
+		}
 	}
 }

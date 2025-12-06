@@ -55,7 +55,7 @@ public abstract class AbstractPassengerCar extends EntityRollingStock implements
             return false;
         }
 
-        if (worldObj.isRemote == false)
+        if (!worldObj.isRemote)
         {
             ItemStack itemstack = entityplayer.inventory.getCurrentItem();
             if(lockThisCart(itemstack, entityplayer))
@@ -68,10 +68,7 @@ public abstract class AbstractPassengerCar extends EntityRollingStock implements
                 return true;
             }
 
-            if (worldObj.isRemote == false)
-            {
-                entityplayer.mountEntity(this);
-            }
+            entityplayer.mountEntity(this);
         }
 
         return true;

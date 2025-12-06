@@ -11,6 +11,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import net.minecraft.creativetab.CreativeTabs;
@@ -37,6 +38,7 @@ import train.common.core.creativetab.*;
 import train.common.core.TrainModCore;
 import train.common.core.handlers.*;
 import train.common.core.managers.TierRecipeManager;
+import train.common.entity.EntitySeat;
 import train.common.generation.ComponentVillageTrainstation;
 import train.common.generation.WorldGenWorld;
 import train.common.items.TCItems;
@@ -209,6 +211,7 @@ public static final SimpleNetworkWrapper gsfsrChannel = NetworkRegistry.INSTANCE
 		/* Networking and Packet initialisation */
 		PacketHandler.init();
 
+		EntityRegistry.registerModEntity(EntitySeat.class, "train_seat", Traincraft.traincraftRegistry.incrementTrainID(), Traincraft.instance, 512, 1, false);
 		tcLog.info("Finished Preinitialization!");
 	}
 
@@ -256,7 +259,6 @@ public static final SimpleNetworkWrapper gsfsrChannel = NetworkRegistry.INSTANCE
 
 		TrainTalk.getInstance().init();
 		//DSSConfig.load();
-
 
 		tcLog.info("Finished Initialization!");
 
