@@ -1107,10 +1107,10 @@ public class ItemTCRail extends ItemPart {
 				if (!crossover10x2Switch(context, player, world, x, y, z, l, tempType, context.getStraightLabel(), typeVariant90Turn(context, EnumCoreTrack. CORE_5X_TURN_R, tempType.getVariant()), player.isSneaking(), true)) { return false; }
 				break;
 			case CORE_DIAGONAL_45DEGREE_4X3_SWITCH_L:
-				if (!diagonal45Degree4x3Switch(player, world, x, y, z, l, tempType, typeVariantDiagonalStraightLabel, typeVariant90Turn(EnumCoreTrack.CORE_5X_TURN_L, tempType.getVariant()), player.isSneaking(), false)) { return false; }
+				if (!diagonal45Degree4x3Switch(context, player, world, x, y, z, l, tempType, context.getDiagonalStraightLabel(), typeVariant90Turn(context, EnumCoreTrack.CORE_5X_TURN_L, tempType.getVariant()), player.isSneaking(), false)) { return false; }
 				break;
 			case CORE_DIAGONAL_45DEGREE_4X3_SWITCH_R:
-				if (!diagonal45Degree4x3Switch(player, world, x, y, z, l, tempType, typeVariantDiagonalStraightLabel, typeVariant90Turn(EnumCoreTrack.CORE_5X_TURN_R, tempType.getVariant()), player.isSneaking(), true)) { return false; }
+				if (!diagonal45Degree4x3Switch(context, player, world, x, y, z, l, tempType, context.getDiagonalStraightLabel(), typeVariant90Turn(context, EnumCoreTrack.CORE_5X_TURN_R, tempType.getVariant()), player.isSneaking(), true)) { return false; }
 				break;
 			case CORE_4x4_SWITCH_R:
 				if (l == 2) {
@@ -3090,7 +3090,7 @@ public class ItemTCRail extends ItemPart {
 			String orientation = getTrackOrientation(l, yaw);
 			if (orientation != "")
 			{
-				tempType = EnumTracks.GetTrackByLabel(type.getLabel().replace(EnumTracks.DIAGONAL_45DEGREE_4X3_SWITCH.getLabel(),  EnumTracks.DIAGONAL_45DEGREE_4X3_SWITCH.getLabel() + "_" + orientation.toUpperCase()));
+				directionalTrack = EnumTracks.GetTrackByLabel(type.getLabel().replace(EnumTracks.DIAGONAL_45DEGREE_4X3_SWITCH.getLabel(),  EnumTracks.DIAGONAL_45DEGREE_4X3_SWITCH.getLabel() + "_" + orientation.toUpperCase()));
 			}
 
 		}
@@ -4315,7 +4315,7 @@ public class ItemTCRail extends ItemPart {
 		return true;
 	}
 
-	private boolean diagonal45Degree4x3Switch(EntityPlayer player, World world, int x, int y, int z, int facing, ITrackDefinition tempType, String typeVariantStraight, String typeVariant90Turn, boolean sneaking, boolean isRight) {
+	private boolean diagonal45Degree4x3Switch(TrackPlacementContext context, EntityPlayer player, World world, int x, int y, int z, int facing, ITrackDefinition tempType, String typeVariantStraight, String typeVariant90Turn, boolean sneaking, boolean isRight) {
 		int dx = 1;
 		int dz = 1;
 		int[] xArray, zArray, tArray;
@@ -4366,7 +4366,7 @@ public class ItemTCRail extends ItemPart {
 		// Cardinal facings 0-3 map to diagonal codes 4-7; which one depends on isRight.
 		int diagFacing = 4 + (isRight ? facing : (facing + 3) % 4);
 
-		if (!putDownTurn(player, world, false, x, y, z, flipArraySign(xArray, x, false), flipArraySign(zArray, z, false), facing, false, exitDir, x + xArray[xArray.length-1], z + zArray[zArray.length-1] , radius, x + worldCenterX,
+		if (!putDownTurn(context, player, world, false, x, y, z, flipArraySign(xArray, x, false), flipArraySign(zArray, z, false), facing, false, exitDir, x + xArray[xArray.length-1], z + zArray[zArray.length-1] , radius, x + worldCenterX,
 				y + 1, z + worldCenterZ, typeVariant90Turn, tempType.getItem().item))
 			return false;
 
@@ -4397,19 +4397,19 @@ public class ItemTCRail extends ItemPart {
 		}
 		world.setBlockMetadataWithNotify(x + originShiftX, y + 1, z + originShiftZ, facing, 3);//to force client update
 
-		putDownSingleRail(world, x, y + 1, z, diagFacing, x + worldCenterX, y + 1, z + worldCenterZ, 0, tempType.getLabel(), true, x + originShiftX, y + 1, z + originShiftZ, true, false);
+		putDownSingleRail(context, world, x, y + 1, z, diagFacing, x + worldCenterX, y + 1, z + worldCenterZ, 0, tempType.getLabel(), true, x + originShiftX, y + 1, z + originShiftZ, true, false);
 
 		for (int i = 1; i < EnumTracks.GetSwitchSize(tempType.getCoreTrack()); i++) {
-			putDownSingleRail(world, x + (dx*i), y + 1, z + (dz*i), diagFacing, x + worldCenterX, y + 1, z + worldCenterZ, radius, typeVariantStraight, false, x+originShiftX, y + 1, z + originShiftZ, true, false);
+			putDownSingleRail(context, world, x + (dx*i), y + 1, z + (dz*i), diagFacing, x + worldCenterX, y + 1, z + worldCenterZ, radius, typeVariantStraight, false, x+originShiftX, y + 1, z + originShiftZ, true, false);
 		}
 		for (int i = EnumTracks.GetSwitchSize(tempType.getCoreTrack()); i < 3; i++) {
-			putDownSingleRail(world, x + (i * dx), y + 1, z + (i * dz), diagFacing, x + 1 , y + 1, z - 7.99, 8.49, typeVariantStraight, false, x + originShiftX, y + 1, z + originShiftZ, false, false);
+			putDownSingleRail(context, world, x + (i * dx), y + 1, z + (i * dz), diagFacing, x + 1 , y + 1, z - 7.99, 8.49, typeVariantStraight, false, x + originShiftX, y + 1, z + originShiftZ, false, false);
 		}
 		return true;
 	}
 
 
-	private boolean rightDiamondCrossing(EntityPlayer player, World world, int x, int y, int z, int l, ITrackDefinition tempType)
+	private boolean rightDiamondCrossing(TrackPlacementContext context, EntityPlayer player, World world, int x, int y, int z, int l, ITrackDefinition tempType)
 	{
 		if (!canPlaceTrack(context, player, world, x, y + 1, z)) {
 			return false;
