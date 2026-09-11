@@ -107,6 +107,7 @@ public class TCItems {
 		TrackItemIDs.tcRailLargeParallelSwitch.item = new ItemTCRail(EnumTracks.LARGE_PARALLEL_SWITCH);
 
 		TrackItemIDs.tcRailCrossoverSwitch10x2.item = new ItemTCRail(EnumTracks.CROSSOVER_SWITCH_10X2);
+		TrackItemIDs.tcRail4x3Diagonal45DegreeSwitch.item = new ItemTCRail(EnumTracks.DIAGONAL_45DEGREE_4X3_SWITCH);
 
 		TrackItemIDs.tcRailSmallParallelCurve.item = new ItemTCRail(EnumTracks.SMALL_PARALLEL_CURVE);
 		TrackItemIDs.tcRailMediumParallelCurve.item = new ItemTCRail(EnumTracks.MEDIUM_PARALLEL_CURVE);

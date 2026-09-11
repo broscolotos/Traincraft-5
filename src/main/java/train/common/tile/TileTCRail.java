@@ -324,6 +324,9 @@ public class TileTCRail extends TileEntity implements ITileTCRail {
 			case CORE_3x5_45DEGREE_SWITCH:
 			case CORE_3x5_45DEGREE_SWITCH_L:
 			case CORE_3x5_45DEGREE_SWITCH_R:
+			case CORE_DIAGONAL_45DEGREE_4X3_SWITCH:
+			case CORE_DIAGONAL_45DEGREE_4X3_SWITCH_L:
+			case CORE_DIAGONAL_45DEGREE_4X3_SWITCH_R:
 				return 7;
 
 			case CORE_VERY_LONG_STRAIGHT:

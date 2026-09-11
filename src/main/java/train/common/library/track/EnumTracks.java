@@ -40,6 +40,7 @@ public enum EnumTracks implements ITrackDefinition
     VERY_LARGE_SWITCH("VERY_LARGE_SWITCH", NORMAL, CORE_11x11_SWITCH, TrackItemIDs.tcRailVeryLargeSwitch),
 
     CROSSOVER_SWITCH_10X2("CROSSOVER_SWITCH_10X2", NORMAL, CORE_10x2_CROSSOVER_SWITCH, TrackItemIDs.tcRailCrossoverSwitch10x2),
+    DIAGONAL_45DEGREE_4X3_SWITCH("DIAGONAL_45DEGREE_4x3_SWITCH", NORMAL, CORE_DIAGONAL_45DEGREE_4X3_SWITCH, TrackItemIDs.tcRail4x3Diagonal45DegreeSwitch),
 
     MEDIUM_PARALLEL_SWITCH("MEDIUM_PARALLEL_SWITCH", NORMAL, CORE_4x11_PARALLEL_SWITCH, TrackItemIDs.tcRailMediumParallelSwitch),
 
@@ -60,6 +61,7 @@ public enum EnumTracks implements ITrackDefinition
     MEDIUM_45DEGREE_SWITCH("MEDIUM_45DEGREE_SWITCH", NORMAL, CORE_3x5_45DEGREE_SWITCH, TrackItemIDs.tcRailMedium45DegreeSwitch),
 
     LARGE_45DEGREE_SWITCH("LARGE_45DEGREE_SWITCH", NORMAL, CORE_4x8_45DEGREE_SWITCH, TrackItemIDs.tcRailLarge45DegreeSwitch),
+
 
     TWO_WAYS_CROSSING("TWO_WAYS_CROSSING", NORMAL, CORE_TWO_WAYS_CROSSING, TrackItemIDs.tcRailTwoWaysCrossing),
     DIAGONAL_TWO_WAYS_CROSSING("DIAGONAL_TWO_WAYS_CROSSING", NORMAL, CORE_DIAGONAL_TWO_WAYS_CROSSING, TrackItemIDs.tcRailTwoWaysCrossing),
@@ -590,6 +592,7 @@ public enum EnumTracks implements ITrackDefinition
                         break;
                     case CORE_S_CURVE_20x2:
                     case CORE_10x2_CROSSOVER_SWITCH:
+                    case CORE_DIAGONAL_45DEGREE_4X3_SWITCH:
                         newAutoGenTrackOne = new TrackDefinition(track.getLabel() + "_LEFT", track.getRailType(), track.getVariant(), EnumCoreTrack.valueOf(track.getCoreTrack() + "_L"), track.getItem());
                         newAutoGenTrackTwo = new TrackDefinition(track.getLabel() + "_RIGHT", track.getRailType(), track.getVariant(), EnumCoreTrack.valueOf(track.getCoreTrack() + "_R"), track.getItem());
                         break;
@@ -903,6 +906,9 @@ public enum EnumTracks implements ITrackDefinition
             case CORE_3x5_45DEGREE_SWITCH:
             case CORE_3x5_45DEGREE_SWITCH_L:
             case CORE_3x5_45DEGREE_SWITCH_R:
+            case CORE_DIAGONAL_45DEGREE_4X3_SWITCH:
+            case CORE_DIAGONAL_45DEGREE_4X3_SWITCH_L:
+            case CORE_DIAGONAL_45DEGREE_4X3_SWITCH_R:
                 return 2;
 
             case CORE_4x11_PARALLEL_SWITCH:
