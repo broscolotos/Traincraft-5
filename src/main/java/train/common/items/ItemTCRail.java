@@ -4307,7 +4307,7 @@ public class ItemTCRail extends ItemPart {
 
 		putDownSingleRail(context, world, x, y + 1, z, facing, x + centerX, y + 1, z + centerZ, radius, tempType.getLabel(), true, x + originShiftX, y + 1, z + originShiftZ, true, false);
 		for (int i = 1; i < EnumTracks.GetSwitchSize(tempType.getCoreTrack()); i++) {
-			putDownSingleRail(context, world, x + (dx*i), y + 1, z + (dz*i), facing, x + centerX, y + 1, z + centerZ, radius, typeVariantStraight, false, x+originShiftX, y + 1, z + originShiftZ, true, false);
+			putDownSingleRail(context, world, x + (dx*i), y + 1, z + (dz*i), facing, x + centerX, y + 1, z + centerZ, radius, typeVariantStraight, false, x + originShiftX, y + 1, z + originShiftZ, true, false);
 		}
 		for (int i = EnumTracks.GetSwitchSize(tempType.getCoreTrack()); i < 10; i++) {
 			putDownSingleRail(context, world, x + (i * dx), y + 1, z + (i * dz), facing, x + 1 , y + 1, z - 7.99, 8.49, typeVariantStraight, false, x + originShiftX, y + 1, z + originShiftZ, false, false);
@@ -4396,10 +4396,15 @@ public class ItemTCRail extends ItemPart {
 		}
 		world.setBlockMetadataWithNotify(x + originShiftX, y + 1, z + originShiftZ, facing, 3);//to force client update
 
-		putDownSingleRail(context, world, x, y + 1, z, diagFacing, x + worldCenterX,y + 1, z + worldCenterZ, radius, tempType.getLabel(), true, x + originShiftX, y + 1, z + originShiftZ, true, false);
-
+		for (int i = 0; i < 3; i++) {
+			if (!canPlaceTrack(context, player, world, x + (dx*i), y + 1, z + (dz*i))) {
+				return false;
+			}
+		}
+		
+		putDownSingleRail(context, world, x, y + 1, z, diagFacing, x + worldCenterX,y + 1, z + worldCenterZ, radius, tempType.getLabel(), true, x + originShiftX, y + 1, z + originShiftZ, true, false); //#!#
 		for (int i = 1; i < EnumTracks.GetSwitchSize(tempType.getCoreTrack()); i++) {
-			putDownSingleRail(context, world, x + (dx*i), y + 1, z + (dz*i), diagFacing, x + worldCenterX, y + 1, z + worldCenterZ, radius, typeVariantStraight, false, x+originShiftX, y + 1, z + originShiftZ, true, false);
+			putDownSingleRail(context, world, x + (dx*i), y + 1, z + (dz*i), diagFacing, x + worldCenterX, y + 1, z + worldCenterZ, radius, typeVariantStraight, false, x + originShiftX, y + 1, z + originShiftZ, true, false);
 		}
 		for (int i = EnumTracks.GetSwitchSize(tempType.getCoreTrack()); i < 3; i++) {
 			putDownSingleRail(context, world, x + (i * dx), y + 1, z + (i * dz), diagFacing, x + 1 , y + 1, z - 7.99, 8.49, typeVariantStraight, false, x + originShiftX, y + 1, z + originShiftZ, false, false);

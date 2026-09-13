@@ -93,13 +93,6 @@ public class ModelRightSwitchTCTrack extends AbstractSwitchTCTrack
 		applyDiagonal4x3Transform(facing);
         if (active) this.renderDiagonal4x3Active();
 		else this.renderDiagonal4x3Inactive();
-
-		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(
-				x + 4.4, y,       z - 5.9,
-				x + 4.6, y + 0.1, z - 6.1);
-
-		RenderGlobal.drawOutlinedBoundingBox(box, 1);
-
 		GL11.glPopMatrix();
 	}
 
