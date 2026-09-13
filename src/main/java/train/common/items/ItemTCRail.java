@@ -4324,8 +4324,8 @@ public class ItemTCRail extends ItemPart {
 		xArray = new int[]{0, 1, 1};
 		zArray = new int[]{1, 2, 3};
 
-		double worldCenterX = 0, worldCenterZ = 0, circCenterX = 5, circCenterZ = -5.5;
-		double radius = 7.5;
+		double worldCenterX = 0, worldCenterZ = 0, circCenterX = 4, circCenterZ = -5.58;
+		double radius = 6.08;
 
 		switch (facing) {
 			case 1:
@@ -4333,30 +4333,30 @@ public class ItemTCRail extends ItemPart {
 				zArray = isRight?flipArraySign(xArray):xArray;
 				xArray = flipArraySign(tArray);
 				dx = -1;
-				worldCenterX = isRight ? circCenterX : -circCenterX;
-				worldCenterZ = circCenterZ;
+				worldCenterX = -circCenterX + 1;
+				worldCenterZ = isRight ? -circCenterZ: circCenterZ + 1;
 				break;
 			case 2:
 				xArray = isRight?xArray:flipArraySign(xArray);
 				zArray = flipArraySign(zArray);
 				dz = -1;
-				worldCenterX = isRight ? -circCenterX : circCenterX;
-				worldCenterZ = circCenterZ;
+				worldCenterX = isRight ? circCenterZ + 1: -circCenterZ;
+				worldCenterZ = -circCenterX + 1;
 				break;
 			case 3:
 				tArray = xArray;
 				xArray = zArray;
 				zArray = isRight?tArray:flipArraySign(tArray);
-				worldCenterX = isRight ? -circCenterX : circCenterX;
-				worldCenterZ = -circCenterZ;
+				worldCenterX = circCenterX;
+				worldCenterZ = isRight ? circCenterZ + 1: -circCenterZ;
 				dx = 1;
 				break;
 			default:
 				if (isRight)
 					xArray = flipArraySign(xArray);
 				dz = 1;
-				worldCenterX = isRight ? -circCenterX : circCenterX;
-				worldCenterZ = -circCenterZ;
+				worldCenterX = isRight ? -circCenterZ : circCenterZ + 1;
+				worldCenterZ = circCenterX;
 				break;
 		}
 
@@ -4365,7 +4365,6 @@ public class ItemTCRail extends ItemPart {
 		// 8-way diagonal direction code for the diagonal-straight rail pieces below.
 		// Cardinal facings 0-3 map to diagonal codes 4-7; which one depends on isRight.
 		int diagFacing = 4 + (isRight ? facing : (facing + 3) % 4);
-
 		if (!putDownTurn(context, player, world, false, x, y, z, flipArraySign(xArray, x, false), flipArraySign(zArray, z, false), facing, false, exitDir, x + xArray[xArray.length-1], z + zArray[zArray.length-1] , radius, x + worldCenterX,
 				y + 1, z + worldCenterZ, typeVariant90Turn, tempType.getItem().item))
 			return false;
@@ -4397,7 +4396,7 @@ public class ItemTCRail extends ItemPart {
 		}
 		world.setBlockMetadataWithNotify(x + originShiftX, y + 1, z + originShiftZ, facing, 3);//to force client update
 
-		putDownSingleRail(context, world, x, y + 1, z, diagFacing, x + worldCenterX, y + 1, z + worldCenterZ, 0, tempType.getLabel(), true, x + originShiftX, y + 1, z + originShiftZ, true, false);
+		putDownSingleRail(context, world, x, y + 1, z, diagFacing, x + worldCenterX,y + 1, z + worldCenterZ, radius, tempType.getLabel(), true, x + originShiftX, y + 1, z + originShiftZ, true, false);
 
 		for (int i = 1; i < EnumTracks.GetSwitchSize(tempType.getCoreTrack()); i++) {
 			putDownSingleRail(context, world, x + (dx*i), y + 1, z + (dz*i), diagFacing, x + worldCenterX, y + 1, z + worldCenterZ, radius, typeVariantStraight, false, x+originShiftX, y + 1, z + originShiftZ, true, false);
